@@ -1,0 +1,686 @@
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Las tres leyes de Kepler</title>
+
+<style>
+*{box-sizing:border-box}
+
+body{
+  margin:0;
+  color:#eef7ff;
+  font-family:Arial,sans-serif;
+  background:radial-gradient(circle at top,#163966,#030914 75%);
+}
+
+header{
+  text-align:center;
+  padding:30px 15px 20px;
+}
+
+header small{
+  color:#61d8ff;
+  letter-spacing:3px;
+}
+
+h1{
+  font-size:clamp(26px,5vw,42px);
+  margin:12px 0;
+}
+
+header p,.description{
+  color:#bed2e9;
+  line-height:1.7;
+}
+
+main{
+  max-width:1200px;
+  margin:auto;
+  padding:15px;
+}
+
+.layout{
+  display:grid;
+  grid-template-columns:240px minmax(0,1fr);
+  gap:20px;
+  align-items:start;
+}
+
+.sidebar,.panel,.concept-card{
+  background:#08172b;
+  border:1px solid #2188c7;
+  border-radius:15px;
+  box-shadow:0 0 25px #008cff12;
+}
+
+.sidebar{
+  padding:16px;
+  position:sticky;
+  top:15px;
+}
+
+.sidebar h2{
+  font-size:17px;
+  color:#65d8ff;
+  margin-top:4px;
+}
+
+.law-button{
+  display:block;
+  width:100%;
+  text-align:left;
+  margin:10px 0;
+  padding:14px 12px;
+  line-height:1.5;
+}
+
+button{
+  cursor:pointer;
+  border-radius:9px;
+  border:1px solid #288bd0;
+  background:#0c2441;
+  color:white;
+  font-weight:bold;
+  transition:background .2s;
+}
+
+button:hover,button.active{
+  background:#12639b;
+}
+
+main h2{
+  color:#65d8ff;
+}
+
+.panel{
+  padding:20px;
+  margin-bottom:20px;
+}
+
+.content{
+  display:grid;
+  grid-template-columns:minmax(0,1.2fr) minmax(0,1fr);
+  gap:22px;
+  align-items:center;
+}
+
+svg{
+  width:100%;
+  height:auto;
+  background:#061225;
+  border-radius:12px;
+}
+
+.info{
+  line-height:1.7;
+}
+
+.formula{
+  font-size:25px;
+  color:#ffd166;
+  font-weight:bold;
+  overflow-wrap:anywhere;
+}
+
+.controls{
+  display:flex;
+  gap:10px;
+  flex-wrap:wrap;
+  margin-top:12px;
+}
+
+.controls button{
+  padding:11px 14px;
+}
+
+.section-title{
+  margin:26px 0 14px;
+}
+
+.cards{
+  display:grid;
+  grid-template-columns:repeat(2,minmax(0,1fr));
+  gap:14px;
+}
+
+.concept-card{
+  padding:16px;
+  min-width:0;
+}
+
+.concept-card h3{
+  margin:8px 0;
+  color:#8ce5ff;
+  font-size:17px;
+}
+
+.concept-card p{
+  color:#c7d9eb;
+  line-height:1.65;
+  font-size:14px;
+}
+
+.mini-image{
+  height:85px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  background:#0b2440;
+  border-radius:10px;
+  overflow:hidden;
+  margin-bottom:12px;
+}
+
+.mini-image svg{
+  height:80px;
+  width:100%;
+  background:transparent;
+}
+
+.tag{
+  color:#ffd166;
+  font-size:12px;
+  font-weight:bold;
+  text-transform:uppercase;
+  letter-spacing:1px;
+}
+
+.highlight{
+  border-left:3px solid #65d8ff;
+  padding-left:12px;
+  color:#d9eafa;
+  line-height:1.7;
+}
+
+footer{
+  padding:25px 10px;
+  text-align:center;
+  color:#81b4db;
+  font-size:12px;
+}
+
+@media(max-width:760px){
+  .layout{grid-template-columns:1fr}
+  .sidebar{position:static}
+  .sidebar nav{
+    display:grid;
+    grid-template-columns:repeat(3,minmax(0,1fr));
+    gap:6px;
+  }
+  .law-button{
+    margin:0;
+    text-align:center;
+    font-size:12px;
+    padding:10px 5px;
+  }
+  .content{grid-template-columns:1fr}
+  .cards{grid-template-columns:1fr}
+  .panel{padding:13px}
+}
+
+@media(min-width:761px){
+  .cards .wide{grid-column:1/-1}
+}
+</style>
+</head>
+
+<body>
+
+<header>
+  <small>ASTRONOMÍA · SISTEMA SOLAR</small>
+  <h1>LAS TRES LEYES DE KEPLER</h1>
+  <p>Descubre las reglas que explican el movimiento de los planetas.</p>
+</header>
+
+<main>
+<div class="layout">
+
+  <!-- MENÚ LATERAL IZQUIERDO -->
+  <aside class="sidebar">
+    <h2>☄ Las leyes de Kepler</h2>
+    <p class="description">Selecciona una ley para explorarla.</p>
+
+    <nav>
+      <button class="law-button active" onclick="setLaw(0)">
+        01 · Primera ley<br>Órbitas elípticas
+      </button>
+
+      <button class="law-button" onclick="setLaw(1)">
+        02 · Segunda ley<br>Ley de las áreas
+      </button>
+
+      <button class="law-button" onclick="setLaw(2)">
+        03 · Tercera ley<br>Períodos orbitales
+      </button>
+    </nav>
+
+    <hr style="border-color:#244767;margin:20px 0">
+
+    <p class="description">
+      <strong style="color:#ffd166">Objetivo:</strong>
+      comprender las órbitas, la velocidad de los planetas y la gravedad.
+    </p>
+  </aside>
+
+  <!-- CONTENIDO PRINCIPAL DERECHO -->
+  <div>
+
+    <section class="panel">
+      <div class="content">
+
+        <div>
+          <svg id="scene" viewBox="0 0 500 350"
+               role="img"
+               aria-label="Animación de las órbitas planetarias">
+          </svg>
+
+          <div class="controls">
+            <button onclick="togglePlay()" id="play">
+              ⏸ Pausar
+            </button>
+            <button onclick="resetAnimation()">
+              ↺ Reiniciar
+            </button>
+          </div>
+        </div>
+
+        <div class="info">
+          <span class="tag">Exploración interactiva</span>
+          <h2 id="title">Primera ley: la órbita elíptica</h2>
+
+          <p class="description" id="description">
+            Los planetas se mueven en órbitas elípticas.
+            El Sol se encuentra en uno de los focos.
+          </p>
+
+          <p class="formula" id="formula">ELIPSE ≠ CÍRCULO</p>
+
+          <p id="observation">
+            Observa cómo el planeta recorre una trayectoria ovalada
+            alrededor del Sol.
+          </p>
+        </div>
+
+      </div>
+    </section>
+
+    <h2 class="section-title">📚 Conceptos importantes</h2>
+
+    <div class="cards">
+
+      <!-- ELIPSE -->
+      <article class="concept-card">
+        <div class="mini-image">
+          <svg viewBox="0 0 180 85" aria-label="Dibujo de una elipse">
+            <ellipse cx="90" cy="42" rx="73" ry="29"
+              fill="none" stroke="#62d8ff" stroke-width="2"/>
+            <circle cx="64" cy="42" r="7" fill="#ffc857"/>
+            <circle cx="135" cy="42" r="4" fill="#62d8ff"/>
+            <text x="64" y="61" fill="#ffd166"
+              font-size="9" text-anchor="middle">Sol</text>
+          </svg>
+        </div>
+        <h3>1. Órbita elíptica</h3>
+        <p><strong>¿Qué es?</strong> Es una trayectoria ovalada que
+        sigue un planeta alrededor de una estrella.</p>
+        <p><strong>Importancia:</strong> explica por qué las órbitas
+        no tienen que ser círculos perfectos.</p>
+      </article>
+
+      <!-- PERIHELIO -->
+      <article class="concept-card">
+        <div class="mini-image">
+          <svg viewBox="0 0 180 85" aria-label="Planeta cerca del Sol">
+            <ellipse cx="90" cy="42" rx="72" ry="29"
+              fill="none" stroke="#62d8ff" stroke-width="2"/>
+            <circle cx="43" cy="42" r="10" fill="#ffc857"/>
+            <circle cx="20" cy="42" r="5" fill="#62d8ff"/>
+            <line x1="25" y1="42" x2="33" y2="42"
+              stroke="#ffffff" stroke-dasharray="2 2"/>
+            <text x="43" y="65" fill="#ffd166"
+              font-size="9" text-anchor="middle">Sol</text>
+          </svg>
+        </div>
+        <h3>2. Perihelio</h3>
+        <p><strong>¿Qué es?</strong> Es el punto de la órbita en el
+        que un planeta está más cerca del Sol.</p>
+        <p><strong>Importancia:</strong> ayuda a comprender los cambios
+        de velocidad durante la órbita.</p>
+      </article>
+
+      <!-- AFELIO -->
+      <article class="concept-card">
+        <div class="mini-image">
+          <svg viewBox="0 0 180 85" aria-label="Planeta lejos del Sol">
+            <ellipse cx="90" cy="42" rx="72" ry="29"
+              fill="none" stroke="#62d8ff" stroke-width="2"/>
+            <circle cx="43" cy="42" r="10" fill="#ffc857"/>
+            <circle cx="161" cy="42" r="5" fill="#62d8ff"/>
+            <text x="43" y="65" fill="#ffd166"
+              font-size="9" text-anchor="middle">Sol</text>
+          </svg>
+        </div>
+        <h3>3. Afelio</h3>
+        <p><strong>¿Qué es?</strong> Es el punto de la órbita donde
+        un planeta está más lejos del Sol.</p>
+        <p><strong>Importancia:</strong> permite comparar las distancias
+        y velocidades en diferentes partes de la órbita.</p>
+      </article>
+
+      <!-- GRAVEDAD -->
+      <article class="concept-card">
+        <div class="mini-image">
+          <svg viewBox="0 0 180 85" aria-label="Atracción gravitacional">
+            <circle cx="42" cy="42" r="18" fill="#ffc857"/>
+            <circle cx="140" cy="42" r="9" fill="#62d8ff"/>
+            <path d="M65 35 L113 35 M105 28 L113 35 L105 42"
+              fill="none" stroke="#ffffff" stroke-width="2"/>
+            <path d="M116 50 L68 50 M76 43 L68 50 L76 57"
+              fill="none" stroke="#65d8ff" stroke-width="2"/>
+          </svg>
+        </div>
+        <h3>4. Fuerza gravitacional</h3>
+        <p><strong>¿Qué es?</strong> Es la atracción que existe entre
+        los cuerpos que tienen masa, como el Sol y los planetas.</p>
+        <p><strong>Importancia:</strong> la gravedad mantiene a los
+        planetas en sus órbitas alrededor del Sol.</p>
+        <p class="formula">F = G · (m₁m₂ / r²)</p>
+        <p>F es la fuerza, G la constante gravitacional, m₁ y m₂ las
+        masas y r la distancia entre sus centros.</p>
+      </article>
+
+      <!-- VELOCIDAD -->
+      <article class="concept-card">
+        <div class="mini-image">
+          <svg viewBox="0 0 180 85" aria-label="Planeta en movimiento">
+            <ellipse cx="90" cy="42" rx="70" ry="27"
+              fill="none" stroke="#62d8ff" stroke-width="2"/>
+            <circle cx="48" cy="42" r="11" fill="#ffc857"/>
+            <circle cx="28" cy="31" r="5" fill="#62d8ff"/>
+            <path d="M23 21 L42 21 M35 15 L42 21 L35 27"
+              fill="none" stroke="#ffffff" stroke-width="2"/>
+          </svg>
+        </div>
+        <h3>5. Velocidad orbital</h3>
+        <p><strong>¿Qué es?</strong> Es la velocidad con la que un
+        cuerpo se desplaza a lo largo de su órbita.</p>
+        <p><strong>Importancia:</strong> según la segunda ley de
+        Kepler, el planeta se mueve más rápido cerca del Sol y más
+        despacio cuando está lejos.</p>
+      </article>
+
+      <!-- PERIODO -->
+      <article class="concept-card">
+        <div class="mini-image">
+          <svg viewBox="0 0 180 85" aria-label="Período orbital">
+            <circle cx="90" cy="42" r="12" fill="#ffc857"/>
+            <ellipse cx="90" cy="42" rx="68" ry="28"
+              fill="none" stroke="#62d8ff" stroke-width="2"/>
+            <circle cx="158" cy="42" r="5" fill="#65d8ff"/>
+            <path d="M123 17 A38 22 0 0 1 147 31"
+              fill="none" stroke="#ffffff" stroke-width="2"/>
+            <path d="M138 27 L147 31 L144 22"
+              fill="none" stroke="#ffffff" stroke-width="2"/>
+          </svg>
+        </div>
+        <h3>6. Período orbital</h3>
+        <p><strong>¿Qué es?</strong> Es el tiempo que tarda un planeta
+        en completar una vuelta alrededor del Sol.</p>
+        <p><strong>Importancia:</strong> permite calcular y comparar
+        la duración de los años de los planetas.</p>
+        <p class="formula">T² ∝ a³</p>
+        <p>T representa el período orbital y a el semieje mayor de
+        la órbita.</p>
+      </article>
+
+      <!-- DATOS CURIOSOS -->
+      <article class="concept-card wide">
+        <h3>🚀 Datos curiosos</h3>
+        <p>🪐 <strong>Saturno:</strong> tarda aproximadamente 29,5 años
+        terrestres en completar una órbita alrededor del Sol.</p>
+        <p>☀️ <strong>La Tierra:</strong> se mueve más rápido cuando
+        está cerca del Sol, a comienzos de enero, que cuando está más
+        lejos, a comienzos de julio.</p>
+        <p>🔭 <strong>Johannes Kepler:</strong> formuló sus tres leyes
+        a comienzos del siglo XVII utilizando observaciones astronómicas,
+        especialmente las de Tycho Brahe.</p>
+        <p>🌌 <strong>Otros sistemas:</strong> estas leyes también
+        ayudan a estudiar satélites y planetas que orbitan otras estrellas.</p>
+      </article>
+
+      <!-- IMPORTANCIA -->
+      <article class="concept-card wide">
+        <h3>🌍 ¿Por qué es importante entender estos conceptos?</h3>
+        <p>
+          Las leyes de Kepler permiten predecir las posiciones y los
+          períodos orbitales de los planetas. También ayudan a comprender
+          el movimiento de los satélites artificiales, planificar misiones
+          espaciales y estudiar otros sistemas planetarios.
+        </p>
+        <div class="highlight">
+          <strong>Idea clave:</strong> las leyes de Kepler describen cómo
+          se mueven los cuerpos en órbita. La gravedad de Newton ayuda a
+          explicar por qué se mueven de esa manera.
+        </div>
+      </article>
+
+    </div>
+  </div>
+</div>
+
+<footer>
+  EXPLORANDO EL UNIVERSO · ASTRONOMÍA Y FÍSICA
+</footer>
+</main>
+
+<script>
+const svg = document.getElementById("scene");
+const NS = "http://www.w3.org/2000/svg";
+
+let law = 0;
+let angle = 0;
+let playing = true;
+let previousTime = 0;
+
+const laws = [
+  {
+    title:"Primera ley: la órbita elíptica",
+    description:"Los planetas se mueven en órbitas elípticas. El Sol está situado en uno de los focos de la elipse.",
+    formula:"ELIPSE ≠ CÍRCULO",
+    observation:"Observa la forma ovalada de la órbita y cómo el Sol está desplazado del centro."
+  },
+  {
+    title:"Segunda ley: la ley de las áreas",
+    description:"La línea que une el Sol y el planeta barre áreas iguales en tiempos iguales.",
+    formula:"ÁREAS IGUALES · TIEMPOS IGUALES",
+    observation:"El planeta se mueve más rápido cerca del Sol y más lento cuando está lejos."
+  },
+  {
+    title:"Tercera ley: el período orbital",
+    description:"Cuanto mayor es el semieje mayor de una órbita, más tiempo tarda el planeta en completar una vuelta alrededor del Sol.",
+    formula:"T² ∝ a³",
+    observation:"Compara las dos órbitas: la más grande tiene un período mayor."
+  }
+];
+
+function element(tag, attrs, parent=svg, value=""){
+  const el=document.createElementNS(NS,tag);
+  for(const [key,val] of Object.entries(attrs)){
+    el.setAttribute(key,val);
+  }
+  if(value) el.textContent=value;
+  parent.appendChild(el);
+  return el;
+}
+
+function label(x,y,value,color="#eaf7ff",size=13){
+  element("text",{
+    x,y,fill:color,"font-size":size,
+    "font-family":"Arial","text-anchor":"middle"
+  },svg,value);
+}
+
+function circle(x,y,r,color,glow=false){
+  if(glow){
+    element("circle",{
+      cx:x,cy:y,r:r*2.4,fill:color,opacity:.16
+    });
+  }
+  element("circle",{
+    cx:x,cy:y,r,fill:color,
+    stroke:"#ffffff","stroke-opacity":.5
+  });
+}
+
+function line(x1,y1,x2,y2,color="#ffd166"){
+  element("line",{
+    x1,y1,x2,y2,stroke:color,
+    "stroke-width":1.5,"stroke-dasharray":"5 5"
+  });
+}
+
+function orbit(cx,cy,rx,ry,color="#55cfff"){
+  element("ellipse",{
+    cx,cy,rx,ry,fill:"none",
+    stroke:color,"stroke-width":2.5
+  });
+}
+
+function planetPosition(M){
+  const e=.48;
+  let E=M;
+  for(let i=0;i<8;i++){
+    E=E-(E-e*Math.sin(E)-M)/(1-e*Math.cos(E));
+  }
+  return {
+    x:250+180*(Math.cos(E)-e),
+    y:175+105*Math.sqrt(1-e*e)*Math.sin(E)
+  };
+}
+
+function draw(){
+  svg.innerHTML="";
+
+  element("rect",{
+    x:0,y:0,width:500,height:350,fill:"#061225"
+  });
+
+  for(let i=0;i<55;i++){
+    element("circle",{
+      cx:(i*83+29)%490,
+      cy:(i*47+17)%340,
+      r:i%4===0?1.4:.7,
+      fill:"#d4eaff",opacity:.65
+    });
+  }
+
+  if(law===0){
+    orbit(250,175,180,105);
+    circle(164,175,17,"#ffc857",true);
+    label(164,208,"SOL","#ffd166");
+    label(250,35,"ÓRBITA ELÍPTICA","#65d8ff",15);
+
+    const p=planetPosition(angle);
+    line(164,175,p.x,p.y);
+    circle(p.x,p.y,9,"#62d8ff",true);
+    label(p.x,p.y-16,"PLANETA","#b9f3ff",11);
+    label(250,315,"El Sol está en uno de los focos","#c9d9ef",12);
+
+  }else if(law===1){
+    orbit(250,175,180,105);
+    circle(164,175,17,"#ffc857",true);
+    label(164,208,"SOL","#ffd166");
+
+    const p=planetPosition(angle);
+    const q=planetPosition(angle+.42);
+
+    element("path",{
+      d:`M164 175 L${p.x} ${p.y} Q${(p.x+q.x)/2} ${(p.y+q.y)/2} ${q.x} ${q.y} Z`,
+      fill:"#ffc857","fill-opacity":.55,
+      stroke:"#ffd166","stroke-width":1.5
+    });
+
+    const r=planetPosition(angle+Math.PI);
+    const s=planetPosition(angle+Math.PI+.42);
+
+    element("path",{
+      d:`M164 175 L${r.x} ${r.y} Q${(r.x+s.x)/2} ${(r.y+s.y)/2} ${s.x} ${s.y} Z`,
+      fill:"#238dff","fill-opacity":.55,
+      stroke:"#65d8ff","stroke-width":1.5
+    });
+
+    line(164,175,p.x,p.y,"#ffffff");
+    circle(p.x,p.y,9,"#62d8ff",true);
+
+    label(295,125,"SECTOR 1","#ffe5a2");
+    label(320,240,"SECTOR 2","#9ee7ff");
+    label(250,28,"LEY DE LAS ÁREAS","#65d8ff",13);
+    label(115,290,"Más rápido cerca del Sol","#ffe5a2",11);
+    label(390,290,"Más lento lejos del Sol","#9ee7ff",11);
+
+  }else{
+    orbit(250,175,75,43,"#ffc857");
+    orbit(250,175,180,105,"#55cfff");
+    circle(250,175,15,"#ffc857",true);
+    label(250,203,"SOL","#ffd166");
+
+    const x1=250+75*Math.cos(angle*1.5);
+    const y1=175+43*Math.sin(angle*1.5);
+    const x2=250+180*Math.cos(angle*.55);
+    const y2=175+105*Math.sin(angle*.55);
+
+    circle(x1,y1,7,"#ffe3a0",true);
+    circle(x2,y2,9,"#62d8ff",true);
+    label(250,35,"DOS ÓRBITAS · DOS PERÍODOS","#65d8ff",13);
+    label(250,270,"Órbita pequeña: año más corto","#ffe3a0",12);
+    label(250,300,"Órbita grande: año más largo","#9ee7ff",12);
+  }
+}
+
+function setLaw(n){
+  law=n;
+  document.getElementById("title").textContent=laws[n].title;
+  document.getElementById("description").textContent=laws[n].description;
+  document.getElementById("formula").textContent=laws[n].formula;
+  document.getElementById("observation").textContent=laws[n].observation;
+
+  document.querySelectorAll(".law-button").forEach((b,i)=>{
+    b.classList.toggle("active",i===n);
+  });
+
+  draw();
+}
+
+function togglePlay(){
+  playing=!playing;
+  document.getElementById("play").textContent=
+    playing?"⏸ Pausar":"▶ Reanudar";
+}
+
+function resetAnimation(){
+  angle=0;
+  playing=true;
+  previousTime=0;
+  document.getElementById("play").textContent="⏸ Pausar";
+  draw();
+}
+
+function animate(time){
+  if(!previousTime) previousTime=time;
+  const dt=Math.min((time-previousTime)/1000,.05);
+  previousTime=time;
+
+  if(playing) angle+=dt*.8;
+
+  draw();
+  requestAnimationFrame(animate);
+}
+
+setLaw(0);
+requestAnimationFrame(animate);
+</script>
+</body>
+</html>
