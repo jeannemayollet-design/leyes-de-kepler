@@ -1,686 +1,367 @@
-
 <!DOCTYPE html>
 <html lang="es">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Las tres leyes de Kepler</title>
-
-<style>
-*{box-sizing:border-box}
-
-body{
-  margin:0;
-  color:#eef7ff;
-  font-family:Arial,sans-serif;
-  background:radial-gradient(circle at top,#163966,#030914 75%);
-}
-
-header{
-  text-align:center;
-  padding:30px 15px 20px;
-}
-
-header small{
-  color:#61d8ff;
-  letter-spacing:3px;
-}
-
-h1{
-  font-size:clamp(26px,5vw,42px);
-  margin:12px 0;
-}
-
-header p,.description{
-  color:#bed2e9;
-  line-height:1.7;
-}
-
-main{
-  max-width:1200px;
-  margin:auto;
-  padding:15px;
-}
-
-.layout{
-  display:grid;
-  grid-template-columns:240px minmax(0,1fr);
-  gap:20px;
-  align-items:start;
-}
-
-.sidebar,.panel,.concept-card{
-  background:#08172b;
-  border:1px solid #2188c7;
-  border-radius:15px;
-  box-shadow:0 0 25px #008cff12;
-}
-
-.sidebar{
-  padding:16px;
-  position:sticky;
-  top:15px;
-}
-
-.sidebar h2{
-  font-size:17px;
-  color:#65d8ff;
-  margin-top:4px;
-}
-
-.law-button{
-  display:block;
-  width:100%;
-  text-align:left;
-  margin:10px 0;
-  padding:14px 12px;
-  line-height:1.5;
-}
-
-button{
-  cursor:pointer;
-  border-radius:9px;
-  border:1px solid #288bd0;
-  background:#0c2441;
-  color:white;
-  font-weight:bold;
-  transition:background .2s;
-}
-
-button:hover,button.active{
-  background:#12639b;
-}
-
-main h2{
-  color:#65d8ff;
-}
-
-.panel{
-  padding:20px;
-  margin-bottom:20px;
-}
-
-.content{
-  display:grid;
-  grid-template-columns:minmax(0,1.2fr) minmax(0,1fr);
-  gap:22px;
-  align-items:center;
-}
-
-svg{
-  width:100%;
-  height:auto;
-  background:#061225;
-  border-radius:12px;
-}
-
-.info{
-  line-height:1.7;
-}
-
-.formula{
-  font-size:25px;
-  color:#ffd166;
-  font-weight:bold;
-  overflow-wrap:anywhere;
-}
-
-.controls{
-  display:flex;
-  gap:10px;
-  flex-wrap:wrap;
-  margin-top:12px;
-}
-
-.controls button{
-  padding:11px 14px;
-}
-
-.section-title{
-  margin:26px 0 14px;
-}
-
-.cards{
-  display:grid;
-  grid-template-columns:repeat(2,minmax(0,1fr));
-  gap:14px;
-}
-
-.concept-card{
-  padding:16px;
-  min-width:0;
-}
-
-.concept-card h3{
-  margin:8px 0;
-  color:#8ce5ff;
-  font-size:17px;
-}
-
-.concept-card p{
-  color:#c7d9eb;
-  line-height:1.65;
-  font-size:14px;
-}
-
-.mini-image{
-  height:85px;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  background:#0b2440;
-  border-radius:10px;
-  overflow:hidden;
-  margin-bottom:12px;
-}
-
-.mini-image svg{
-  height:80px;
-  width:100%;
-  background:transparent;
-}
-
-.tag{
-  color:#ffd166;
-  font-size:12px;
-  font-weight:bold;
-  text-transform:uppercase;
-  letter-spacing:1px;
-}
-
-.highlight{
-  border-left:3px solid #65d8ff;
-  padding-left:12px;
-  color:#d9eafa;
-  line-height:1.7;
-}
-
-footer{
-  padding:25px 10px;
-  text-align:center;
-  color:#81b4db;
-  font-size:12px;
-}
-
-@media(max-width:760px){
-  .layout{grid-template-columns:1fr}
-  .sidebar{position:static}
-  .sidebar nav{
-    display:grid;
-    grid-template-columns:repeat(3,minmax(0,1fr));
-    gap:6px;
-  }
-  .law-button{
-    margin:0;
-    text-align:center;
-    font-size:12px;
-    padding:10px 5px;
-  }
-  .content{grid-template-columns:1fr}
-  .cards{grid-template-columns:1fr}
-  .panel{padding:13px}
-}
-
-@media(min-width:761px){
-  .cards .wide{grid-column:1/-1}
-}
-</style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <title>Prototipo Didáctico 3D - Plástico Reciclado HDPE</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #1a1a2e;
+            color: #ffffff;
+            touch-action: none;
+        }
+        #canvas-container {
+            width: 100vw;
+            height: 100vh;
+            display: block;
+        }
+        #ui-container {
+            position: absolute;
+            top: 15px;
+            left: 15px;
+            z-index: 100;
+            pointer-events: none;
+        }
+        .card {
+            background: rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 12px;
+            padding: 12px 16px;
+            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.3);
+            pointer-events: auto;
+            max-width: 260px;
+        }
+        h1 {
+            font-size: 1rem;
+            margin: 0 0 4px 0;
+            color: #4eefb6;
+        }
+        p {
+            font-size: 0.75rem;
+            margin: 0;
+            color: #e0e0e0;
+            line-height: 1.3;
+        }
+        #controls {
+            position: absolute;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 100;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 6px;
+            background: rgba(0, 0, 0, 0.6);
+            padding: 8px 12px;
+            border-radius: 20px;
+            backdrop-filter: blur(5px);
+            max-width: 92vw;
+        }
+        button {
+            background: #4eefb6;
+            color: #0f172a;
+            border: none;
+            padding: 8px 12px;
+            border-radius: 16px;
+            font-weight: bold;
+            font-size: 0.75rem;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+        button:hover {
+            background: #3bd4a0;
+        }
+        #info-modal {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            z-index: 100;
+            display: none;
+            max-width: 250px;
+        }
+        .highlight {
+            color: #ffd166;
+            font-weight: bold;
+        }
+    </style>
+    <!-- Imports de Three.js y OrbitControls -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/tween.js/18.6.4/tween.umd.js"></script>
 </head>
-
 <body>
-
-<header>
-  <small>ASTRONOMÍA · SISTEMA SOLAR</small>
-  <h1>LAS TRES LEYES DE KEPLER</h1>
-  <p>Descubre las reglas que explican el movimiento de los planetas.</p>
-</header>
-
-<main>
-<div class="layout">
-
-  <!-- MENÚ LATERAL IZQUIERDO -->
-  <aside class="sidebar">
-    <h2>☄ Las leyes de Kepler</h2>
-    <p class="description">Selecciona una ley para explorarla.</p>
-
-    <nav>
-      <button class="law-button active" onclick="setLaw(0)">
-        01 · Primera ley<br>Órbitas elípticas
-      </button>
-
-      <button class="law-button" onclick="setLaw(1)">
-        02 · Segunda ley<br>Ley de las áreas
-      </button>
-
-      <button class="law-button" onclick="setLaw(2)">
-        03 · Tercera ley<br>Períodos orbitales
-      </button>
-    </nav>
-
-    <hr style="border-color:#244767;margin:20px 0">
-
-    <p class="description">
-      <strong style="color:#ffd166">Objetivo:</strong>
-      comprender las órbitas, la velocidad de los planetas y la gravedad.
-    </p>
-  </aside>
-
-  <!-- CONTENIDO PRINCIPAL DERECHO -->
-  <div>
-
-    <section class="panel">
-      <div class="content">
-
-        <div>
-          <svg id="scene" viewBox="0 0 500 350"
-               role="img"
-               aria-label="Animación de las órbitas planetarias">
-          </svg>
-
-          <div class="controls">
-            <button onclick="togglePlay()" id="play">
-              ⏸ Pausar
-            </button>
-            <button onclick="resetAnimation()">
-              ↺ Reiniciar
-            </button>
-          </div>
+    <div id="canvas-container"></div>
+    
+    <div id="ui-container">
+        <div class="card">
+            <h1>Muebles Didácticos HDPE</h1>
+            <p>Toca cualquier objeto para ver sus especificaciones técnicas.</p>
         </div>
-
-        <div class="info">
-          <span class="tag">Exploración interactiva</span>
-          <h2 id="title">Primera ley: la órbita elíptica</h2>
-
-          <p class="description" id="description">
-            Los planetas se mueven en órbitas elípticas.
-            El Sol se encuentra en uno de los focos.
-          </p>
-
-          <p class="formula" id="formula">ELIPSE ≠ CÍRCULO</p>
-
-          <p id="observation">
-            Observa cómo el planeta recorre una trayectoria ovalada
-            alrededor del Sol.
-          </p>
-        </div>
-
-      </div>
-    </section>
-
-    <h2 class="section-title">📚 Conceptos importantes</h2>
-
-    <div class="cards">
-
-      <!-- ELIPSE -->
-      <article class="concept-card">
-        <div class="mini-image">
-          <svg viewBox="0 0 180 85" aria-label="Dibujo de una elipse">
-            <ellipse cx="90" cy="42" rx="73" ry="29"
-              fill="none" stroke="#62d8ff" stroke-width="2"/>
-            <circle cx="64" cy="42" r="7" fill="#ffc857"/>
-            <circle cx="135" cy="42" r="4" fill="#62d8ff"/>
-            <text x="64" y="61" fill="#ffd166"
-              font-size="9" text-anchor="middle">Sol</text>
-          </svg>
-        </div>
-        <h3>1. Órbita elíptica</h3>
-        <p><strong>¿Qué es?</strong> Es una trayectoria ovalada que
-        sigue un planeta alrededor de una estrella.</p>
-        <p><strong>Importancia:</strong> explica por qué las órbitas
-        no tienen que ser círculos perfectos.</p>
-      </article>
-
-      <!-- PERIHELIO -->
-      <article class="concept-card">
-        <div class="mini-image">
-          <svg viewBox="0 0 180 85" aria-label="Planeta cerca del Sol">
-            <ellipse cx="90" cy="42" rx="72" ry="29"
-              fill="none" stroke="#62d8ff" stroke-width="2"/>
-            <circle cx="43" cy="42" r="10" fill="#ffc857"/>
-            <circle cx="20" cy="42" r="5" fill="#62d8ff"/>
-            <line x1="25" y1="42" x2="33" y2="42"
-              stroke="#ffffff" stroke-dasharray="2 2"/>
-            <text x="43" y="65" fill="#ffd166"
-              font-size="9" text-anchor="middle">Sol</text>
-          </svg>
-        </div>
-        <h3>2. Perihelio</h3>
-        <p><strong>¿Qué es?</strong> Es el punto de la órbita en el
-        que un planeta está más cerca del Sol.</p>
-        <p><strong>Importancia:</strong> ayuda a comprender los cambios
-        de velocidad durante la órbita.</p>
-      </article>
-
-      <!-- AFELIO -->
-      <article class="concept-card">
-        <div class="mini-image">
-          <svg viewBox="0 0 180 85" aria-label="Planeta lejos del Sol">
-            <ellipse cx="90" cy="42" rx="72" ry="29"
-              fill="none" stroke="#62d8ff" stroke-width="2"/>
-            <circle cx="43" cy="42" r="10" fill="#ffc857"/>
-            <circle cx="161" cy="42" r="5" fill="#62d8ff"/>
-            <text x="43" y="65" fill="#ffd166"
-              font-size="9" text-anchor="middle">Sol</text>
-          </svg>
-        </div>
-        <h3>3. Afelio</h3>
-        <p><strong>¿Qué es?</strong> Es el punto de la órbita donde
-        un planeta está más lejos del Sol.</p>
-        <p><strong>Importancia:</strong> permite comparar las distancias
-        y velocidades en diferentes partes de la órbita.</p>
-      </article>
-
-      <!-- GRAVEDAD -->
-      <article class="concept-card">
-        <div class="mini-image">
-          <svg viewBox="0 0 180 85" aria-label="Atracción gravitacional">
-            <circle cx="42" cy="42" r="18" fill="#ffc857"/>
-            <circle cx="140" cy="42" r="9" fill="#62d8ff"/>
-            <path d="M65 35 L113 35 M105 28 L113 35 L105 42"
-              fill="none" stroke="#ffffff" stroke-width="2"/>
-            <path d="M116 50 L68 50 M76 43 L68 50 L76 57"
-              fill="none" stroke="#65d8ff" stroke-width="2"/>
-          </svg>
-        </div>
-        <h3>4. Fuerza gravitacional</h3>
-        <p><strong>¿Qué es?</strong> Es la atracción que existe entre
-        los cuerpos que tienen masa, como el Sol y los planetas.</p>
-        <p><strong>Importancia:</strong> la gravedad mantiene a los
-        planetas en sus órbitas alrededor del Sol.</p>
-        <p class="formula">F = G · (m₁m₂ / r²)</p>
-        <p>F es la fuerza, G la constante gravitacional, m₁ y m₂ las
-        masas y r la distancia entre sus centros.</p>
-      </article>
-
-      <!-- VELOCIDAD -->
-      <article class="concept-card">
-        <div class="mini-image">
-          <svg viewBox="0 0 180 85" aria-label="Planeta en movimiento">
-            <ellipse cx="90" cy="42" rx="70" ry="27"
-              fill="none" stroke="#62d8ff" stroke-width="2"/>
-            <circle cx="48" cy="42" r="11" fill="#ffc857"/>
-            <circle cx="28" cy="31" r="5" fill="#62d8ff"/>
-            <path d="M23 21 L42 21 M35 15 L42 21 L35 27"
-              fill="none" stroke="#ffffff" stroke-width="2"/>
-          </svg>
-        </div>
-        <h3>5. Velocidad orbital</h3>
-        <p><strong>¿Qué es?</strong> Es la velocidad con la que un
-        cuerpo se desplaza a lo largo de su órbita.</p>
-        <p><strong>Importancia:</strong> según la segunda ley de
-        Kepler, el planeta se mueve más rápido cerca del Sol y más
-        despacio cuando está lejos.</p>
-      </article>
-
-      <!-- PERIODO -->
-      <article class="concept-card">
-        <div class="mini-image">
-          <svg viewBox="0 0 180 85" aria-label="Período orbital">
-            <circle cx="90" cy="42" r="12" fill="#ffc857"/>
-            <ellipse cx="90" cy="42" rx="68" ry="28"
-              fill="none" stroke="#62d8ff" stroke-width="2"/>
-            <circle cx="158" cy="42" r="5" fill="#65d8ff"/>
-            <path d="M123 17 A38 22 0 0 1 147 31"
-              fill="none" stroke="#ffffff" stroke-width="2"/>
-            <path d="M138 27 L147 31 L144 22"
-              fill="none" stroke="#ffffff" stroke-width="2"/>
-          </svg>
-        </div>
-        <h3>6. Período orbital</h3>
-        <p><strong>¿Qué es?</strong> Es el tiempo que tarda un planeta
-        en completar una vuelta alrededor del Sol.</p>
-        <p><strong>Importancia:</strong> permite calcular y comparar
-        la duración de los años de los planetas.</p>
-        <p class="formula">T² ∝ a³</p>
-        <p>T representa el período orbital y a el semieje mayor de
-        la órbita.</p>
-      </article>
-
-      <!-- DATOS CURIOSOS -->
-      <article class="concept-card wide">
-        <h3>🚀 Datos curiosos</h3>
-        <p>🪐 <strong>Saturno:</strong> tarda aproximadamente 29,5 años
-        terrestres en completar una órbita alrededor del Sol.</p>
-        <p>☀️ <strong>La Tierra:</strong> se mueve más rápido cuando
-        está cerca del Sol, a comienzos de enero, que cuando está más
-        lejos, a comienzos de julio.</p>
-        <p>🔭 <strong>Johannes Kepler:</strong> formuló sus tres leyes
-        a comienzos del siglo XVII utilizando observaciones astronómicas,
-        especialmente las de Tycho Brahe.</p>
-        <p>🌌 <strong>Otros sistemas:</strong> estas leyes también
-        ayudan a estudiar satélites y planetas que orbitan otras estrellas.</p>
-      </article>
-
-      <!-- IMPORTANCIA -->
-      <article class="concept-card wide">
-        <h3>🌍 ¿Por qué es importante entender estos conceptos?</h3>
-        <p>
-          Las leyes de Kepler permiten predecir las posiciones y los
-          períodos orbitales de los planetas. También ayudan a comprender
-          el movimiento de los satélites artificiales, planificar misiones
-          espaciales y estudiar otros sistemas planetarios.
-        </p>
-        <div class="highlight">
-          <strong>Idea clave:</strong> las leyes de Kepler describen cómo
-          se mueven los cuerpos en órbita. La gravedad de Newton ayuda a
-          explicar por qué se mueven de esa manera.
-        </div>
-      </article>
-
     </div>
-  </div>
-</div>
 
-<footer>
-  EXPLORANDO EL UNIVERSO · ASTRONOMÍA Y FÍSICA
-</footer>
-</main>
+    <div id="info-modal" class="card">
+        <h1 id="info-title">Detalle de Elemento</h1>
+        <div id="info-content"></div>
+    </div>
 
-<script>
-const svg = document.getElementById("scene");
-const NS = "http://www.w3.org/2000/svg";
+    <div id="controls">
+        <button id="btn-stool">Ver Banquito</button>
+        <button id="btn-letters">Ver Letras</button>
+        <button id="btn-shapes">Ver Encaje</button>
+        <button id="btn-animate">Elevar / Encajar</button>
+    </div>
 
-let law = 0;
-let angle = 0;
-let playing = true;
-let previousTime = 0;
+    <script>
+        const container = document.getElementById('canvas-container');
+        const scene = new THREE.Scene();
+        scene.background = new THREE.Color('#1a1a2e');
 
-const laws = [
-  {
-    title:"Primera ley: la órbita elíptica",
-    description:"Los planetas se mueven en órbitas elípticas. El Sol está situado en uno de los focos de la elipse.",
-    formula:"ELIPSE ≠ CÍRCULO",
-    observation:"Observa la forma ovalada de la órbita y cómo el Sol está desplazado del centro."
-  },
-  {
-    title:"Segunda ley: la ley de las áreas",
-    description:"La línea que une el Sol y el planeta barre áreas iguales en tiempos iguales.",
-    formula:"ÁREAS IGUALES · TIEMPOS IGUALES",
-    observation:"El planeta se mueve más rápido cerca del Sol y más lento cuando está lejos."
-  },
-  {
-    title:"Tercera ley: el período orbital",
-    description:"Cuanto mayor es el semieje mayor de una órbita, más tiempo tarda el planeta en completar una vuelta alrededor del Sol.",
-    formula:"T² ∝ a³",
-    observation:"Compara las dos órbitas: la más grande tiene un período mayor."
-  }
-];
+        const camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 0.1, 1000);
+        camera.position.set(20, 20, 25);
 
-function element(tag, attrs, parent=svg, value=""){
-  const el=document.createElementNS(NS,tag);
-  for(const [key,val] of Object.entries(attrs)){
-    el.setAttribute(key,val);
-  }
-  if(value) el.textContent=value;
-  parent.appendChild(el);
-  return el;
-}
+        const renderer = new THREE.WebGLRenderer({ antialias: true });
+        renderer.setSize(window.innerWidth, window.innerHeight);
+        renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+        renderer.shadowMap.enabled = true;
+        renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+        container.appendChild(renderer.domElement);
 
-function label(x,y,value,color="#eaf7ff",size=13){
-  element("text",{
-    x,y,fill:color,"font-size":size,
-    "font-family":"Arial","text-anchor":"middle"
-  },svg,value);
-}
+        const controls = new THREE.OrbitControls(camera, renderer.domElement);
+        controls.enableDamping = true;
+        controls.dampingFactor = 0.05;
+        controls.maxPolarAngle = Math.PI / 2 - 0.05;
 
-function circle(x,y,r,color,glow=false){
-  if(glow){
-    element("circle",{
-      cx:x,cy:y,r:r*2.4,fill:color,opacity:.16
-    });
-  }
-  element("circle",{
-    cx:x,cy:y,r,fill:color,
-    stroke:"#ffffff","stroke-opacity":.5
-  });
-}
+        // Iluminación
+        const ambientLight = new THREE.AmbientLight(0xffffff, 0.7);
+        scene.add(ambientLight);
 
-function line(x1,y1,x2,y2,color="#ffd166"){
-  element("line",{
-    x1,y1,x2,y2,stroke:color,
-    "stroke-width":1.5,"stroke-dasharray":"5 5"
-  });
-}
+        const dirLight = new THREE.DirectionalLight(0xffffff, 0.8);
+        dirLight.position.set(15, 25, 15);
+        dirLight.castShadow = true;
+        scene.add(dirLight);
 
-function orbit(cx,cy,rx,ry,color="#55cfff"){
-  element("ellipse",{
-    cx,cy,rx,ry,fill:"none",
-    stroke:color,"stroke-width":2.5
-  });
-}
+        // Suelo
+        const floorGeo = new THREE.PlaneGeometry(60, 60);
+        const floorMat = new THREE.MeshStandardMaterial({ color: 0x252840, roughness: 0.8 });
+        const floor = new THREE.Mesh(floorGeo, floorMat);
+        floor.rotation.x = -Math.PI / 2;
+        floor.position.y = -0.1;
+        floor.receiveShadow = true;
+        scene.add(floor);
 
-function planetPosition(M){
-  const e=.48;
-  let E=M;
-  for(let i=0;i<8;i++){
-    E=E-(E-e*Math.sin(E)-M)/(1-e*Math.cos(E));
-  }
-  return {
-    x:250+180*(Math.cos(E)-e),
-    y:175+105*Math.sqrt(1-e*e)*Math.sin(E)
-  };
-}
+        // Textura Terrazzo Confeti HDPE
+        function createTerrazzoTexture(baseColorHex) {
+            const canvas = document.createElement('canvas');
+            canvas.width = 512;
+            canvas.height = 512;
+            const ctx = canvas.getContext('2d');
+            ctx.fillStyle = baseColorHex;
+            ctx.fillRect(0, 0, 512, 512);
+            const colors = ['#ff595e', '#ffca3a', '#8ac926', '#1982c4', '#6a4c93', '#ffffff'];
+            for (let i = 0; i < 400; i++) {
+                ctx.fillStyle = colors[Math.floor(Math.random() * colors.length)];
+                ctx.beginPath();
+                const x = Math.random() * 512;
+                const y = Math.random() * 512;
+                const r = Math.random() * 6 + 2;
+                ctx.arc(x, y, r, 0, Math.PI * 2);
+                ctx.fill();
+            }
+            const texture = new THREE.CanvasTexture(canvas);
+            texture.wrapS = THREE.RepeatWrapping;
+            texture.wrapT = THREE.RepeatWrapping;
+            return texture;
+        }
 
-function draw(){
-  svg.innerHTML="";
+        const matBlue = new THREE.MeshStandardMaterial({ map: createTerrazzoTexture('#1e3d59'), roughness: 0.3 });
+        const matYellow = new THREE.MeshStandardMaterial({ map: createTerrazzoTexture('#f5af19'), roughness: 0.3 });
+        const matRed = new THREE.MeshStandardMaterial({ map: createTerrazzoTexture('#e63946'), roughness: 0.3 });
+        const matGreen = new THREE.MeshStandardMaterial({ map: createTerrazzoTexture('#2a9d8f'), roughness: 0.3 });
+        const matOrange = new THREE.MeshStandardMaterial({ map: createTerrazzoTexture('#f4a261'), roughness: 0.3 });
+        const matBoard = new THREE.MeshStandardMaterial({ map: createTerrazzoTexture('#a8dede'), roughness: 0.4 });
 
-  element("rect",{
-    x:0,y:0,width:500,height:350,fill:"#061225"
-  });
+        const raycaster = new THREE.Raycaster();
+        const mouse = new THREE.Vector2();
+        const interactiveObjects = [];
 
-  for(let i=0;i<55;i++){
-    element("circle",{
-      cx:(i*83+29)%490,
-      cy:(i*47+17)%340,
-      r:i%4===0?1.4:.7,
-      fill:"#d4eaff",opacity:.65
-    });
-  }
+        // 1. BANQUITO (Patas Gruesas y Esquinas Redondeadas)
+        const stoolGroup = new THREE.Group();
+        stoolGroup.position.set(-8, 0, 0);
 
-  if(law===0){
-    orbit(250,175,180,105);
-    circle(164,175,17,"#ffc857",true);
-    label(164,208,"SOL","#ffd166");
-    label(250,35,"ÓRBITA ELÍPTICA","#65d8ff",15);
+        const seatGeo = new THREE.BoxGeometry(6, 0.8, 6);
+        const seat = new THREE.Mesh(seatGeo, matBlue);
+        seat.position.y = 4;
+        seat.castShadow = true;
+        seat.receiveShadow = true;
+        stoolGroup.add(seat);
 
-    const p=planetPosition(angle);
-    line(164,175,p.x,p.y);
-    circle(p.x,p.y,9,"#62d8ff",true);
-    label(p.x,p.y-16,"PLANETA","#b9f3ff",11);
-    label(250,315,"El Sol está en uno de los focos","#c9d9ef",12);
+        const legRadius = 0.75;
+        const legHeight = 4;
+        const legGeo = new THREE.CylinderGeometry(legRadius, legRadius, legHeight, 16);
+        const legPositions = [[-2.2, 2, -2.2], [2.2, 2, -2.2], [-2.2, 2, 2.2], [2.2, 2, 2.2]];
+        legPositions.forEach(pos => {
+            const leg = new THREE.Mesh(legGeo, matYellow);
+            leg.position.set(...pos);
+            leg.castShadow = true;
+            stoolGroup.add(leg);
+        });
 
-  }else if(law===1){
-    orbit(250,175,180,105);
-    circle(164,175,17,"#ffc857",true);
-    label(164,208,"SOL","#ffd166");
+        stoolGroup.userData = {
+            title: "Banquito de Preescolar",
+            details: `• <span class="highlight">Peso:</span> 3 kg<br>• <span class="highlight">Plástico HDPE:</span> 3.3 kg aprox.<br>• <span class="highlight">Equivalencia:</span> ~900 tapitas`
+        };
+        scene.add(stoolGroup);
+        interactiveObjects.push(seat);
 
-    const p=planetPosition(angle);
-    const q=planetPosition(angle+.42);
+        // 2. TABLERO DE ENCAJE
+        const puzzleGroup = new THREE.Group();
+        puzzleGroup.position.set(6, 0.4, -4);
 
-    element("path",{
-      d:`M164 175 L${p.x} ${p.y} Q${(p.x+q.x)/2} ${(p.y+q.y)/2} ${q.x} ${q.y} Z`,
-      fill:"#ffc857","fill-opacity":.55,
-      stroke:"#ffd166","stroke-width":1.5
-    });
+        const boardShape = new THREE.Shape();
+        boardShape.moveTo(-4, -4); boardShape.lineTo(4, -4); boardShape.lineTo(4, 4); boardShape.lineTo(-4, 4); boardShape.closePath();
 
-    const r=planetPosition(angle+Math.PI);
-    const s=planetPosition(angle+Math.PI+.42);
+        const holeTri = new THREE.Path();
+        holeTri.moveTo(-2.2, 1.2); holeTri.lineTo(-0.8, 1.2); holeTri.lineTo(-1.5, 2.8); holeTri.closePath();
+        boardShape.holes.push(holeTri);
 
-    element("path",{
-      d:`M164 175 L${r.x} ${r.y} Q${(r.x+s.x)/2} ${(r.y+s.y)/2} ${s.x} ${s.y} Z`,
-      fill:"#238dff","fill-opacity":.55,
-      stroke:"#65d8ff","stroke-width":1.5
-    });
+        const holeCirc = new THREE.Path();
+        holeCirc.absarc(1.5, 2, 0.8, 0, Math.PI * 2, true);
+        boardShape.holes.push(holeCirc);
 
-    line(164,175,p.x,p.y,"#ffffff");
-    circle(p.x,p.y,9,"#62d8ff",true);
+        const holeSq = new THREE.Path();
+        holeSq.moveTo(-2.2, -2.5); holeSq.lineTo(-0.8, -2.5); holeSq.lineTo(-0.8, -1.1); holeSq.lineTo(-2.2, -1.1); holeSq.closePath();
+        boardShape.holes.push(holeSq);
 
-    label(295,125,"SECTOR 1","#ffe5a2");
-    label(320,240,"SECTOR 2","#9ee7ff");
-    label(250,28,"LEY DE LAS ÁREAS","#65d8ff",13);
-    label(115,290,"Más rápido cerca del Sol","#ffe5a2",11);
-    label(390,290,"Más lento lejos del Sol","#9ee7ff",11);
+        const holeRect = new THREE.Path();
+        holeRect.moveTo(0.7, -2.5); holeRect.lineTo(2.3, -2.5); holeRect.lineTo(2.3, -1.3); holeRect.lineTo(0.7, -1.3); holeRect.closePath();
+        boardShape.holes.push(holeRect);
 
-  }else{
-    orbit(250,175,75,43,"#ffc857");
-    orbit(250,175,180,105,"#55cfff");
-    circle(250,175,15,"#ffc857",true);
-    label(250,203,"SOL","#ffd166");
+        const boardGeo = new THREE.ExtrudeGeometry(boardShape, { depth: 0.8, bevelEnabled: true, bevelSize: 0.05, bevelThickness: 0.05 });
+        const boardMesh = new THREE.Mesh(boardGeo, matBoard);
+        boardMesh.rotation.x = -Math.PI / 2;
+        boardMesh.castShadow = true;
+        puzzleGroup.add(boardMesh);
 
-    const x1=250+75*Math.cos(angle*1.5);
-    const y1=175+43*Math.sin(angle*1.5);
-    const x2=250+180*Math.cos(angle*.55);
-    const y2=175+105*Math.sin(angle*.55);
+        const shapesGroup = new THREE.Group();
+        const triShape = new THREE.Shape();
+        triShape.moveTo(-0.65, -0.6); triShape.lineTo(0.65, -0.6); triShape.lineTo(0, 0.75); triShape.closePath();
+        const triMesh = new THREE.Mesh(new THREE.ExtrudeGeometry(triShape, { depth: 0.76 }), matRed);
+        triMesh.rotation.x = -Math.PI / 2; triMesh.position.set(-1.5, 0.4, -2);
+        shapesGroup.add(triMesh);
 
-    circle(x1,y1,7,"#ffe3a0",true);
-    circle(x2,y2,9,"#62d8ff",true);
-    label(250,35,"DOS ÓRBITAS · DOS PERÍODOS","#65d8ff",13);
-    label(250,270,"Órbita pequeña: año más corto","#ffe3a0",12);
-    label(250,300,"Órbita grande: año más largo","#9ee7ff",12);
-  }
-}
+        const circMesh = new THREE.Mesh(new THREE.CylinderGeometry(0.75, 0.75, 0.76, 32), matGreen);
+        circMesh.position.set(1.5, 0.4, -2);
+        shapesGroup.add(circMesh);
 
-function setLaw(n){
-  law=n;
-  document.getElementById("title").textContent=laws[n].title;
-  document.getElementById("description").textContent=laws[n].description;
-  document.getElementById("formula").textContent=laws[n].formula;
-  document.getElementById("observation").textContent=laws[n].observation;
+        const sqMesh = new THREE.Mesh(new THREE.BoxGeometry(1.3, 0.76, 1.3), matYellow);
+        sqMesh.position.set(-1.5, 0.4, 1.8);
+        shapesGroup.add(sqMesh);
 
-  document.querySelectorAll(".law-button").forEach((b,i)=>{
-    b.classList.toggle("active",i===n);
-  });
+        const rectMesh = new THREE.Mesh(new THREE.BoxGeometry(1.5, 0.76, 1.1), matOrange);
+        rectMesh.position.set(1.5, 0.4, 1.9);
+        shapesGroup.add(rectMesh);
 
-  draw();
-}
+        puzzleGroup.add(shapesGroup);
 
-function togglePlay(){
-  playing=!playing;
-  document.getElementById("play").textContent=
-    playing?"⏸ Pausar":"▶ Reanudar";
-}
+        const puzzleInfo = {
+            title: "Set de Encaje Geométrico",
+            details: `• <span class="highlight">Peso por ficha:</span> 50 g (200 g total)<br>• <span class="highlight">Tablero:</span> 500 g<br>• <span class="highlight">Plástico Total:</span> 800 g`
+        };
+        boardMesh.userData = puzzleInfo;
+        triMesh.userData = puzzleInfo; circMesh.userData = puzzleInfo; sqMesh.userData = puzzleInfo; rectMesh.userData = puzzleInfo;
+        scene.add(puzzleGroup);
+        interactiveObjects.push(boardMesh, triMesh, circMesh, sqMesh, rectMesh);
 
-function resetAnimation(){
-  angle=0;
-  playing=true;
-  previousTime=0;
-  document.getElementById("play").textContent="⏸ Pausar";
-  draw();
-}
+        // 3. LETRAS Y NÚMEROS
+        const loader = new THREE.FontLoader();
+        const lettersGroup = new THREE.Group();
+        lettersGroup.position.set(0, 0, 6);
 
-function animate(time){
-  if(!previousTime) previousTime=time;
-  const dt=Math.min((time-previousTime)/1000,.05);
-  previousTime=time;
+        loader.load('https://threejs.org/examples/fonts/helvetiker_bold.typeface.json', function (font) {
+            const chars = ['A', 'B', 'C', '1', '2', '3'];
+            const materials = [matRed, matYellow, matGreen, matBlue, matOrange];
+            chars.forEach((char, index) => {
+                const geo = new THREE.TextGeometry(char, { font: font, size: 1.2, height: 0.4, curveSegments: 4 });
+                const mesh = new THREE.Mesh(geo, materials[index % materials.length]);
+                mesh.position.set((index - 2.5) * 2, 0, 0);
+                mesh.castShadow = true;
+                mesh.userData = {
+                    title: `Letra / Número (${char})`,
+                    details: `• <span class="highlight">Peso:</span> 20 g<br>• <span class="highlight">Plástico:</span> 23 g<br>• <span class="highlight">Equivalencia:</span> 9 tapitas`
+                };
+                lettersGroup.add(mesh);
+                interactiveObjects.push(mesh);
+            });
+        });
+        scene.add(lettersGroup);
 
-  if(playing) angle+=dt*.8;
+        // Interacción Táctil y de Clics
+        const modal = document.getElementById('info-modal');
+        const modalTitle = document.getElementById('info-title');
+        const modalContent = document.getElementById('info-content');
 
-  draw();
-  requestAnimationFrame(animate);
-}
+        function handlePointer(clientX, clientY) {
+            mouse.x = (clientX / window.innerWidth) * 2 - 1;
+            mouse.y = -(clientY / window.innerHeight) * 2 + 1;
+            raycaster.setFromCamera(mouse, camera);
+            const intersects = raycaster.intersectObjects(interactiveObjects);
+            if (intersects.length > 0) {
+                const data = intersects[0].object.userData;
+                if (data && data.title) {
+                    modalTitle.innerText = data.title;
+                    modalContent.innerHTML = data.details;
+                    modal.style.display = 'block';
+                }
+            }
+        }
 
-setLaw(0);
-requestAnimationFrame(animate);
-</script>
+        window.addEventListener('click', (e) => handlePointer(e.clientX, e.clientY));
+        window.addEventListener('touchend', (e) => {
+            if (e.changedTouches.length > 0) {
+                handlePointer(e.changedTouches[0].clientX, e.changedTouches[0].clientY);
+            }
+        });
+
+        // Animación Encaje
+        let shapesElevated = false;
+        document.getElementById('btn-animate').addEventListener('click', () => {
+            new TWEEN.Tween(shapesGroup.position)
+                .to({ y: shapesElevated ? 0 : 2.2 }, 1000)
+                .easing(TWEEN.Easing.Cubic.Out)
+                .start();
+            shapesElevated = !shapesElevated;
+        });
+
+        // Movimiento de Cámara
+        function moveCamera(x, y, z, tx, ty, tz) {
+            new TWEEN.Tween(camera.position).to({ x, y, z }, 1200).easing(TWEEN.Easing.Quadratic.Out).start();
+            new TWEEN.Tween(controls.target).to({ x: tx, y: ty, z: tz }, 1200).easing(TWEEN.Easing.Quadratic.Out).start();
+        }
+
+        document.getElementById('btn-stool').addEventListener('click', () => moveCamera(-8, 8, 12, -8, 2, 0));
+        document.getElementById('btn-letters').addEventListener('click', () => moveCamera(0, 6, 14, 0, 0, 6));
+        document.getElementById('btn-shapes').addEventListener('click', () => moveCamera(6, 10, 5, 6, 0, -4));
+
+        function animate(time) {
+            requestAnimationFrame(animate);
+            TWEEN.update();
+            controls.update();
+            renderer.render(scene, camera);
+        }
+        animate();
+
+        // Autoajuste dinámico de pantalla para celulares
+        window.addEventListener('resize', () => {
+            camera.aspect = window.innerWidth / window.innerHeight;
+            camera.updateProjectionMatrix();
+            renderer.setSize(window.innerWidth, window.innerHeight);
+        });
+    </script>
 </body>
 </html>
